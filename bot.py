@@ -129,28 +129,32 @@ class InstagramBot:
 	def unfollow_user(self, user):
 		self.nav_user(user), time.sleep(1)
 
-		buttons = self.driver.find_elements_by_tag_name('Button')[1]
-		buttons.click()
+		try:
+			buttons = self.driver.find_elements_by_tag_name('Button')[1]
+			buttons.click(), time.sleep(1)
 
-		time.sleep(1)
+			unfollow_button = self.find_buttons('Unfollow')
+			unfollow_button.click()
+			print('Unfollowed')
+		except:
+			print('Failed to Unfollow')
+			pass
 
-		unfollow_button = self.find_buttons('Unfollow')
-		unfollow_button.click()
+		# print('Tag names\n')
+		# for element in self.driver.find_elements_by_tag_name('Button'):
+		# 	print(element.text)
+		# 	print(element.tag_name)
+		# 	print('\n')
 
-		print('Tag names\n')
-		for element in self.driver.find_elements_by_tag_name('Button'):
-			print(element.text)
-			print(element.tag_name)
-			print('\n')
-
-		print('class names')
-		# for element in self.driver.find_elements_by_class_name()
+		# print('class names')
 
 
 	def find_buttons(self, button_text):
 		buttons = self.driver.find_element_by_xpath("//*[text()='{}']".format(button_text))
 		return buttons
-		
+	
+	def track_followers(self):
+		if self.button
 
 
 if __name__ == '__main__':
@@ -167,3 +171,5 @@ if __name__ == '__main__':
 	ig_bot.login()
 	# ig_bot.follow_user('mkbhd')
 	ig_bot.unfollow_user('mkbhd')
+
+
