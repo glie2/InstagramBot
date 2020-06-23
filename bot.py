@@ -81,8 +81,6 @@ class InstagramBot:
 
 
 
-
-
 	"""
 	Follows a user's instagram page
 
@@ -100,30 +98,15 @@ class InstagramBot:
 		except:
 			print("can't follow")
 			pass
-		# try:
-		# 	followbutton = self.driver.find_element_by_xpath("//*[text()='Follow']")
-		# 	followbutton.click()
-		# 	print('followed')
-		# except:
-		# 	print('except pass')
-		# 	pass
-		
+	
 
-		# print('Tag names')
-		# for element in self.driver.find_elements_by_tag_name('Button'):
-		# 	print(element.text)
-		# 	print(element.tag_name)
 
-		# 	print('space')
-
-		# print('Class names')
-		# for element in self.driver.find_elements_by_class_name('_5f5mN       jIbKX  _6VtSN     yZn4P   '):
-		# 	print(element.text)
-		# 	print(element.tag_name)
-		
-		# self.driver.find_elements_by_tag_name('Button')[0].click()
 	
 	"""
+	Unfollows a user's instagram page
+
+	Args:
+		user:str: instagram username
 	
 	"""
 	def unfollow_user(self, user):
@@ -140,13 +123,6 @@ class InstagramBot:
 			print('Failed to Unfollow')
 			pass
 
-		# print('Tag names\n')
-		# for element in self.driver.find_elements_by_tag_name('Button'):
-		# 	print(element.text)
-		# 	print(element.tag_name)
-		# 	print('\n')
-
-		# print('class names')
 
 
 	def find_buttons(self, button_text):
