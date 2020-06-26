@@ -1,12 +1,17 @@
 import os
 import time
 import configparser
+import pyautogui as pag
 from utility_methods.utility_methods import *
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 
 class InstagramBot:
+
 
 
 
@@ -32,7 +37,7 @@ class InstagramBot:
 		self.login_url = config['IG_URLS']['LOGIN']
 		self.nav_user_url = config['IG_URLS']['NAV_USER']
 		self.get_tag_url = config['IG_URLS']['SEARCH_TAGS']
-
+		
 		self.driver = webdriver.Chrome('chromedriver.exe')
 
 
@@ -41,7 +46,6 @@ class InstagramBot:
 	"""
 
 	Logs in via web portal
-
 	
 	"""
 	def login(self):
@@ -50,18 +54,21 @@ class InstagramBot:
 		self.driver.find_element_by_name('username').send_keys(self.username)
 		self.driver.find_element_by_name('password').send_keys(self.password)
 		login_button = self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div[2]/div[1]/div/form/div[4]/button/div')
-		login_button.click(), time.sleep(2)
+		login_button.click(), time.sleep(3)
 
-		try:
-			# 'Not Now' button
-			self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/div/div/button').click()	
-		except:
-			pass
-		try:
-			#'Not Now' button to turning on notifications
-			self.driver.find_element_by_xpath('/html/body/div[4]/div/div/div/div[3]/button[2]').click()
-		except:
-			pass
+		#Post Login Pop-ups
+		for i in range (2):
+			try:
+				optn_buttons = self.driver.find_elements_by_tag_name('Button')
+				for element in optn_buttons:
+					if element.text == 'Not Now':
+						element.click()
+						print('clicked')
+						break
+				time.sleep(2)
+			except:
+				print('failed to click not now')
+				pass
 
 
 
@@ -82,6 +89,7 @@ class InstagramBot:
 
 
 	"""
+
 	Follows a user's instagram page
 
 	Args:
@@ -103,6 +111,7 @@ class InstagramBot:
 
 	
 	"""
+
 	Unfollows a user's instagram page
 
 	Args:
@@ -125,12 +134,75 @@ class InstagramBot:
 
 
 
+
+	"""
+
+	Finds button element from text
+
+	Args:
+		button_text:str: button text
+
+	"""
 	def find_buttons(self, button_text):
 		buttons = self.driver.find_element_by_xpath("//*[text()='{}']".format(button_text))
 		return buttons
-	
-	def track_followers(self):
-		if self.button
+
+
+
+
+	"""
+
+	Closes current window
+
+	"""
+	def close_window(self):
+		print('Closing window')
+		pag.hotkey('ctrl', 'w')
+
+
+
+
+	"""
+	Switches from desktop to mobile view
+	"""
+	def toggle_mobile_view(self):
+
+		self.nav_user(self.username), time.sleep(2)
+
+		self.driver.maximize_window(), time.sleep(2)
+
+		pag.hotkey('ctrl', 'shift', 'i'), time.sleep(2)
+
+		pag.hotkey('ctrl', 'shift', 'm'), time.sleep(2)
+		
+		self.driver.refresh(), time.sleep(2)
+
+		pag.hotkey('ctrl', 'shift', 'i'), time.sleep(2)
+
+
+		try:
+			optn_buttons = self.driver.find_elements_by_tag_name('Button')
+			for element in optn_buttons:
+				if element.text == 'Not Now':
+					element.click()
+					print('clicked')
+					break
+			time.sleep(2)
+		except:
+			print('failed to click not now')
+			pass
+
+	def post(self):
+
+		print("Post Function:\n")
+
+		try:
+			post_button = self.driver.find_element_by_css_selector("[aria-label='New Post']")
+			post_button.click()
+			print('found the button and clicked it')
+		except:
+			print('could not find button')
+			pass
 
 
 if __name__ == '__main__':
@@ -146,6 +218,9 @@ if __name__ == '__main__':
 	ig_bot = InstagramBot()
 	ig_bot.login()
 	# ig_bot.follow_user('mkbhd')
-	ig_bot.unfollow_user('mkbhd')
+	# ig_bot.unfollow_user('mkbhd')
+	ig_bot.toggle_mobile_view()
+	# ig_bot.close_window()
+	ig_bot.post()
 
 
